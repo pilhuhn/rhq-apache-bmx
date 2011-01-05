@@ -1,29 +1,40 @@
 <?xml version="1.0"?>
 <plugin name="apache-bmx"
         displayName="apache-bmxPlugin"
-        package="org.rhq.plugins.apache-bmx"
+        package="org.rhq.plugins.apache_bmx"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="urn:xmlns:rhq-plugin"
         xmlns:c="urn:xmlns:rhq-configuration">
 
 
-    <server
-            name="apache-bmx" 
+    <server name="Apache with mod_bmx"
             discovery="ApacheDiscovery"
             class="ApacheComponent"
- 
+
         >
 
             <plugin-configuration>
-                <!-- TODO add your own here -->
-                <c:simple-property name="dummy"/>
+                <c:simple-property name="host" required="true" default="localhost"/>
+                <c:simple-property name="port" required="true" default="80" type="integer"/>
+                <c:simple-property name="bmxHandler" required="true" default="/bmx"/>
             </plugin-configuration>
 
-        <!-- TODO process scans -->
 
-            <metric property="dummyMetric" displayName="Dummy display name"/>
+        <metric property="global:ServerVersion" dataType="trait" displayName="Server Version" description="Version of the apache server"/>
+        <metric property="global:ServerUptimeSeconds" dataType="measurement" category="availability" measurementType="trendsup" units="seconds"
+                displayName="Server Uptime" description="Time since last restart"/>
+        <metric property="forever:InRequests" category="utilization" measurementType="trendsup" displayName="Requests received (all time)" displayType="summary"/>
+        <metric property="forever:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (all time)"/>
+        <metric property="start:InRequests" category="utilization" measurementType="trendsup" displayName="Requests received (since last start)" displayType="summary"/>
+        <metric property="start:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last start)"/>
+        <metric property="restart:InRequests" category="utilization" measurementType="trendsup" displayName="Requests received (since last restart)" displayType="summary"/>
+        <metric property="restart:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last restart)"/>
+
+        <!-- TODO add more metrics per category of forever, start, restart -->
 
 
+
+        <!-- TODO add services for vhosts -->
     </server>
 
 
