@@ -37,6 +37,7 @@ public class ApacheComponent implements ResourceComponent
     private final Log log = LogFactory.getLog(this.getClass());
 
     private String bmxUrl;
+    private String vHost;
     Pattern typePattern = Pattern.compile(".*Type=([\\w-]+),.*");
 
 
@@ -60,6 +61,7 @@ public class ApacheComponent implements ResourceComponent
 
         Configuration conf = context.getPluginConfiguration();
         bmxUrl = conf.getSimpleValue("bmxUrl", DEFAULT_BMX_HANDLER_URL);
+        vHost = conf.getSimpleValue("vhost","");
 
     }
 
@@ -73,7 +75,9 @@ public class ApacheComponent implements ResourceComponent
 
     }
 
-
+    public String getBmxUrl() {
+        return bmxUrl;
+    }
 
     /**
      * Gather measurement data
@@ -130,8 +134,8 @@ public class ApacheComponent implements ResourceComponent
             }
 
 
-            // at the moment only look at Host=_GLOBAL_ data -- vhosts are/will be services
-            if (!line.contains("Host=_GLOBAL_"))
+            // If the section does not match our vhost, ignore it.
+            if (!line.contains("Host="+vHost))
                 continue;
 
             // Now some global data

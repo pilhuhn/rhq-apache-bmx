@@ -54,6 +54,7 @@ public class ApacheDiscovery implements ResourceDiscoveryComponent {
         String urlString = url.toString();
 
         config.put(new PropertySimple("bmxUrl",urlString));
+        config.put(new PropertySimple("vhost","_GLOBAL_"));
 
         DiscoveredResourceDetails detail =  new DiscoveredResourceDetails(
             discoveryContext.getResourceType(), // ResourceType
