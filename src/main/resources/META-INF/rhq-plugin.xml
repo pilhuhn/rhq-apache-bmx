@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<plugin name="apache-bmx"
+        displayName="apache-bmxPlugin"
+        package="org.rhq.plugins.apache-bmx"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="urn:xmlns:rhq-plugin"
+        xmlns:c="urn:xmlns:rhq-configuration">
+
+
+    <server
+            name="apache-bmx" 
+            discovery="ApacheDiscovery"
+            class="ApacheComponent"
+ 
+        >
+
+            <plugin-configuration>
+                <!-- TODO add your own here -->
+                <c:simple-property name="dummy"/>
+            </plugin-configuration>
+
+        <!-- TODO process scans -->
+
+            <metric property="dummyMetric" displayName="Dummy display name"/>
+
+
+    </server>
+
+
+</plugin>
