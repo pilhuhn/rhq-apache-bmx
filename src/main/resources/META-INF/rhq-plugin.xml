@@ -19,7 +19,7 @@
 
 
         <!-- global:* metrics are only available at server level -->
-        <metric property="global:ServerVersion" dataType="trait" displayName="Server Version" description="Version of the apache server"/>
+        <metric property="global:ServerVersion" dataType="trait" displayName="Server Version" description="Version of the apache server" displayType="summary"/>
         <metric property="global:ServerUptimeSeconds" dataType="measurement" category="availability" measurementType="trendsup" units="seconds"
                 displayName="Server Uptime" description="Time since last restart"/>
 
@@ -29,6 +29,12 @@
         <metric property="start:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last start)"/>
         <metric property="restart:InRequests" category="utilization" measurementType="trendsup" displayName="Requests received (since last restart)" displayType="summary"/>
         <metric property="restart:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last restart)"/>
+        <metric property="forever:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (all time)" />
+        <metric property="forever:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (all time)" displayType="summary"/>
+        <metric property="start:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (since last start)" />
+        <metric property="start:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (since last start)" displayType="summary"/>
+        <metric property="restart:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (since last restart)" />
+        <metric property="restart:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (since last restart)" displayType="summary"/>
 
         <!-- TODO add more metrics per category of forever, start, restart -->
 
@@ -43,6 +49,13 @@
             <metric property="start:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last start)"/>
             <metric property="restart:InRequests" category="utilization" measurementType="trendsup" displayName="Requests received (since last restart)" displayType="summary"/>
             <metric property="restart:OutResponses" category="utilization" measurementType="trendsup" displayName="Responses sent (since last restart)"/>
+            <metric property="forever:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (all time)" />
+            <metric property="forever:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (all time)"/>
+            <metric property="start:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (since last start)" />
+            <metric property="start:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (since last start)"/>
+            <metric property="restart:OutResponses200" category="utilization" measurementType="trendsup" displayName="OK (200) responses sent (since last restart)" />
+            <metric property="restart:OutLowBytes" category="utilization" measurementType="trendsup" displayName="Bytes send (since last restart)"/>
+
             <!-- TODO add more metrics per category of forever, start, restart -->
 
         </service>

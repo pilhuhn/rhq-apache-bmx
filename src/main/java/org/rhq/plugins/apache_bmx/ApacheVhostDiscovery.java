@@ -38,7 +38,7 @@ import org.rhq.core.pluginapi.inventory.ResourceDiscoveryComponent;
 import org.rhq.core.pluginapi.inventory.ResourceDiscoveryContext;
 
 /**
- * // TODO: Document this
+ * Discover VHhosts
  * @author Heiko W. Rupp
  */
 public class ApacheVhostDiscovery implements ResourceDiscoveryComponent<ApacheComponent> {
@@ -80,7 +80,7 @@ public class ApacheVhostDiscovery implements ResourceDiscoveryComponent<ApacheCo
                     null // process scan
                 );
                 discoveredResources.add(detail);
-                log.info("Found vhost" + host);
+                log.info("Found vhost [" + host + "]");
             }
         }
 
