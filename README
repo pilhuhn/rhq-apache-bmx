@@ -1,0 +1,6 @@
+Simple proof of concept plugin to monitor apache httpd via mod_bmx.
+You can find mod_bmx at https://github.com/hyperic/mod_bmx
+Install notes for mod_bmx are here: https://github.com/hyperic/mod_bmx/blob/master/INSTALL.txt
+
+The plugin by default assumes the bmx handler to be at /bmx and not to be protected
+
