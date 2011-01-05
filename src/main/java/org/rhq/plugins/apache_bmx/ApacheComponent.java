@@ -3,12 +3,15 @@ package org.rhq.plugins.apache_bmx;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +37,7 @@ public class ApacheComponent implements ResourceComponent
     private final Log log = LogFactory.getLog(this.getClass());
 
     private String bmxUrl;
+    Pattern typePattern = Pattern.compile(".*Type=([\\w-]+),.*");
 
 
 
@@ -77,6 +81,7 @@ public class ApacheComponent implements ResourceComponent
      */
     public  void getValues(MeasurementReport report, Set<MeasurementScheduleRequest> metrics) throws Exception {
 
+        // TODO do some clever caching of data here, so that we won't hammer mod_bmx
         URL url = new URL(bmxUrl);
         URLConnection conn = url.openConnection();
         BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
@@ -106,32 +111,51 @@ public class ApacheComponent implements ResourceComponent
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
         String line;
-        Mode mode = Mode.NONE;
 
         while ((line = reader.readLine())!=null) {
-            // TODO implement some real state machine / parser here
 
-            if (mode == Mode.NONE && !line.contains("mod_bmx_status"))
+            if (!line.startsWith("Name: mod_bmx_"))
                 continue;
 
-            // we found the global section
-            mode = Mode.GLOBAL;
-            while (!(line = reader.readLine()).equals("")) {
-                int pos = line.indexOf(":");
-                String key = line.substring(0,pos);
-                String val = line.substring(pos+2);
-                ret.put("global:" + key , val);
+            // Skip over sample data - this is no real module
+            if (line.contains("mod_bmx_example"))
+                continue;
+
+            // Now we have a modules output
+
+            // check for the status module
+            if (line.contains("mod_bmx_status")) {
+                slurpSection(ret,reader,"global");
+                continue;
             }
-            mode = Mode.NONE;
+
+
+            // at the moment only look at Host=_GLOBAL_ data -- vhosts are/will be services
+            if (!line.contains("Host=_GLOBAL_"))
+                continue;
+
+            // Now some global data
+            Matcher m = typePattern.matcher(line);
+
+            if (m.matches()) {
+                String type = m.group(1);
+                if (type.contains("-"))
+                    type= type.substring(type.indexOf("-")+1);
+
+                slurpSection(ret, reader, type);
+            }
         }
 
         return ret;
     }
 
-
-    private static enum Mode {
-        NONE,
-        GLOBAL,
-        VHOST
+    private void slurpSection(Map<String, String> ret, BufferedReader reader, String type) throws IOException {
+        String line;
+        while (!(line = reader.readLine()).equals("")) {
+            int pos = line.indexOf(":");
+            String key = line.substring(0,pos);
+            String val = line.substring(pos+2);
+            ret.put(type + ":" + key , val);
+        }
     }
 }

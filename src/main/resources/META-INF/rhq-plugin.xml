@@ -9,9 +9,7 @@
 
     <server name="Apache with mod_bmx"
             discovery="ApacheDiscovery"
-            class="ApacheComponent"
-
-        >
+            class="ApacheComponent" >
 
             <plugin-configuration>
                 <c:simple-property name="host" required="true" default="localhost"/>
