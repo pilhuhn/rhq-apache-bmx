@@ -83,6 +83,7 @@ public class ApacheVhostDiscovery implements ResourceDiscoveryComponent<ApacheCo
                 log.info("Found vhost [" + host + "]");
             }
         }
+        reader.close();
 
         return discoveredResources;
     }
